@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, ARRAY
+from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
@@ -35,7 +35,7 @@ class RiskAssessment(Base):
     complaint_id = Column(Integer, ForeignKey("complaints.id", ondelete="CASCADE"), nullable=False)
     severity = Column(String(50), nullable=True)  # Critical, Major, Minor
     risk_level = Column(String(50), nullable=True)
-    recommended_actions = Column(ARRAY(Text), nullable=True)
+    recommended_actions = Column(JSON, nullable=True)
     regulatory_impact = Column(Text, nullable=True)
     quality_impact = Column(Text, nullable=True)
     timeline_recommendation = Column(String(255), nullable=True)
