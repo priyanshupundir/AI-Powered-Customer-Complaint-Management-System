@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine, Base
-from app.api import complaints, chat
+from app.api import complaints, chat, bonus_features
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -26,6 +26,7 @@ app.add_middleware(
 # Include routers
 app.include_router(complaints.router, prefix="/api/complaint", tags=["complaints"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
+app.include_router(bonus_features.router, prefix="/api/bonus", tags=["bonus-features"])
 
 
 @app.get("/")

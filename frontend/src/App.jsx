@@ -1,11 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { CssBaseline, Container, Grid, Box, Typography } from '@mui/material';
+import { CssBaseline, Container, Grid, Box, Typography, Tabs } from '@mui/material';
+import Tab from '@mui/material/Tab';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ComplaintForm from './components/ComplaintForm';
 import AICopilot from './components/AICopilot';
 import RiskAssessment from './components/RiskAssessment';
+import BonusFeatures from './components/BonusFeatures';
 
 const theme = createTheme({
   typography: {
@@ -21,7 +23,21 @@ const theme = createTheme({
   },
 });
 
+function TabPanel({ children, value, index }) {
+  return (
+    <div role="tabpanel" hidden={value !== index}>
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
+}
+
 function AppContent() {
+  const [tabValue, setTabValue] = React.useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.100' }}>
       <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 3, mb: 3 }}>
@@ -36,19 +52,40 @@ function AppContent() {
       </Box>
 
       <Container maxWidth="xl" sx={{ mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={5}>
-            <ComplaintForm />
+        <Box sx={{ mb: 3 }}>
+          <Tabs value={tabValue} onChange={handleTabChange} centered>
+            <Tab label="Main Dashboard" />
+            <Tab label="Bonus Features" />
+          </Tabs>
+        </Box>
+
+        <TabPanel value={tabValue} index={0}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} lg={5}>
+              <ComplaintForm />
+            </Grid>
+            
+            <Grid item xs={12} md={6} lg={4}>
+              <AICopilot />
+            </Grid>
+            
+            <Grid item xs={12} md={12} lg={3}>
+              <RiskAssessment />
+            </Grid>
           </Grid>
-          
-          <Grid item xs={12} md={6} lg={4}>
-            <AICopilot />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={1}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <ComplaintForm />
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <BonusFeatures />
+            </Grid>
           </Grid>
-          
-          <Grid item xs={12} md={12} lg={3}>
-            <RiskAssessment />
-          </Grid>
-        </Grid>
+        </TabPanel>
       </Container>
     </Box>
   );
