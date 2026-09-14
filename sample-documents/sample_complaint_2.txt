@@ -1,0 +1,96 @@
+PHARMACEUTICAL QUALITY COMPLAINT
+================================================================================
+
+From: MedSupply Distributors
+Attention: Quality Assurance Department
+Date: September 12, 2024
+Reference: QC-2024-1567
+
+================================================================================
+PRODUCT DETAILS
+================================================================================
+
+Product Name: Metformin Hydrochloride API
+Product Grade: IP/BP (Indian Pharmacopoeia/British Pharmacopoeia)
+Batch Number: MFH260712A
+Manufacturing Date: July 26, 2024
+Expiry Date: July 26, 2026
+Quantity: 50 kg in 2 HDPE drums
+Supplier: PharmaChem Laboratories
+Invoice Number: INV-2024-3421
+
+================================================================================
+COMPLAINT DESCRIPTION
+================================================================================
+
+Issue: Appearance/Color Variation
+Details: 
+Upon receipt of shipment INV-2024-3421 containing Metformin Hydrochloride API,
+Batch MFH260712A, our quality control team observed significant color variation
+from the expected white crystalline powder specification.
+
+Specific Observations:
+- The material appears to have a slight yellowish tint
+- Particle size distribution appears inconsistent
+- Clarity of solution test showed slight turbidity
+- Assay results: 98.5% (specification: 99.0-101.0%)
+
+Affected Quantity: 50 kg (entire shipment)
+Number of Containers: 2 HDPE drums (25 kg each)
+
+================================================================================
+TESTING RESULTS
+================================================================================
+
+Tests Performed:
+1. Appearance: FAIL (color variation)
+2. Identification: PASS
+3. Assay: 98.5% (FAIL - below specification)
+4. Related Substances: PASS
+5. Loss on Drying: PASS
+6. Residue on Ignition: PASS
+7. pH: PASS
+8. Heavy Metals: PASS
+
+================================================================================
+QUALITY IMPACT
+================================================================================
+
+Assessment: The material does not meet established quality specifications and
+cannot be used for pharmaceutical manufacturing without further investigation.
+
+Potential Impact:
+- Batch rejection and replacement required
+- Production schedule delays
+- Additional testing costs
+- Supplier quality performance review
+
+================================================================================
+REQUESTED ACTIONS
+================================================================================
+
+1. Immediate replacement of non-conforming material
+2. Investigation into root cause of quality deviation
+3. Certificate of Analysis review and verification
+4. Quality agreement compliance review
+5. Preventive action implementation
+
+================================================================================
+CONTACT INFORMATION
+================================================================================
+
+Reported By: Michael Chen
+Title: Quality Control Manager
+Email: m.chen@medsupply.com
+Phone: (555) 987-6543
+Department: Quality Assurance
+
+Priority: URGENT
+Required Response: Within 48 hours
+
+================================================================================
+Document Control
+================================================================================
+Classification: Internal Quality Record
+Retention Period: 5 years
+Approved By: ___________________ Date: ___________

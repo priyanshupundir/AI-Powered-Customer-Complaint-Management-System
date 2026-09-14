@@ -1,0 +1,134 @@
+CUSTOMER COMPLAINT NOTIFICATION
+================================================================================
+
+TO: PharmaCare Customer Service
+FROM: Regional Hospital Center
+DATE: September 14, 2024
+COMPLAINT NUMBER: CHG-2024-2234
+
+================================================================================
+REPORTER INFORMATION
+================================================================================
+
+Name: Dr. Emily Rodriguez
+Title: Director of Pharmacy
+Organization: Regional Hospital Center
+Address: 123 Medical Center Drive, Healthcare City, HC 54321
+Email: e.rodriguez@regionalhospital.com
+Phone: (555) 456-7890
+Extension: 234
+
+================================================================================
+PRODUCT COMPLAINT
+================================================================================
+
+Product Name: Ciprofloxacin Tablets
+Strength: 500 mg
+Form: Film-coated tablets
+Batch Number: CHG260712A
+Manufacturing Date: February 20, 2024
+Expiry Date: February 20, 2026
+Supplier: PharmaCare Distribution
+Purchase Order: PO-2024-1892
+
+================================================================================
+NATURE OF COMPLAINT
+================================================================================
+
+Primary Issue: Tablet Hardness/Friability Problem
+Secondary Issue: Packaging Integrity Concern
+
+Detailed Description:
+We received Ciprofloxacin Tablets 500 mg, Batch CHG260712A, on September 8, 2024.
+During routine quality inspection, our pharmacy team identified the following issues:
+
+1. Tablet Hardness: Several tablets showed excessive hardness, making them
+   difficult to crush for pediatric dose preparation
+2. Friability: Friability testing showed 1.2% (specification: ≤0.8%)
+3. Packaging: 3 bottles from the shipment had compromised seals
+4. Appearance: Slight color variation observed in approximately 10% of tablets
+
+Affected Quantity: 200 tablets from a 500-tablet shipment
+Number of Affected Bottles: 5 out of 10 bottles received
+
+Clinical Impact:
+- Delayed medication administration due to crushing difficulties
+- Potential dose accuracy concerns for pediatric patients
+- Medication wastage during preparation
+
+================================================================================
+INVESTIGATION FINDINGS
+================================================================================
+
+Storage Conditions: Verified compliant (15-25°C, 60-65% RH)
+Handling Procedures: Standard operating procedures followed
+Transportation: No damage reported during transit
+Batch History: No previous complaints for this batch
+
+================================================================================
+PATIENT IMPACT
+================================================================================
+
+Number of Patients Affected: 2 (delayed administration)
+Adverse Events: None reported
+Medication Errors: None reported
+Clinical Intervention Required: Yes (alternative crushing method)
+
+================================================================================
+QUALITY ASSESSMENT
+================================================================================
+
+Severity Assessment: MODERATE
+Risk Level: MEDIUM
+Regulatory Impact: Potential - depends on investigation outcome
+Patient Safety: No immediate patient harm identified
+
+================================================================================
+REQUESTED RESOLUTION
+================================================================================
+
+1. Immediate replacement of affected tablets
+2. Quality investigation into batch CHG260712A
+3. Enhanced quality control for future shipments
+4. Certificate of Analysis verification
+5. Quality audit of manufacturing process
+
+================================================================================
+TIMELINE EXPECTATIONS
+================================================================================
+
+Replacement Requested: Within 5 business days
+Investigation Report: Within 10 business days
+Corrective Actions: Within 15 business days
+
+================================================================================
+ATTACHMENTS
+================================================================================
+
+- Photographs of affected tablets
+- Friability test results
+- Packaging inspection report
+- Pharmacy incident report
+
+================================================================================
+APPROVAL
+================================================================================
+
+Report Reviewed By: Dr. James Wilson, Medical Director
+Date: September 14, 2024
+Signature: ___________________
+
+Quality Department Notified: Yes
+Regulatory Affairs Notified: Pending investigation outcome
+Risk Management Notified: Yes
+
+================================================================================
+COMPLAINT STATUS
+================================================================================
+Status: OPEN
+Priority: HIGH
+Assigned To: Quality Assurance Team
+Follow-up Required: Yes
+
+Document Classification: Quality Record
+Retention: Per regulatory requirements

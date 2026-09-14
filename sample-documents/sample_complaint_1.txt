@@ -1,0 +1,78 @@
+CUSTOMER COMPLAINT REPORT
+================================================================================
+
+Complaint ID: CC-2024-0892
+Date Received: September 10, 2024
+Reported By: Dr. Sarah Johnson
+Title: Quality Assurance Manager
+Organization: Apollo Pharmacy Inc.
+Email: sarah.johnson@apollopharmacy.com
+Phone: (555) 123-4567
+
+================================================================================
+PRODUCT INFORMATION
+================================================================================
+
+Product Name: Amoxicylin Capsules
+Product Strength: 500 mg
+Dosage Form: Capsules
+Batch/Lot Number: AMX-2024-0892
+Manufacturing Date: January 15, 2024
+Expiry Date: January 15, 2026
+Manufacturer: PharmaCorp Industries
+NDC Number: 12345-678-90
+
+================================================================================
+COMPLAINT DETAILS
+================================================================================
+
+Nature of Complaint: Discolored Capsules
+Description: 
+We received a shipment of Amoxicylin Capsules 500 mg, Batch AMX-2024-0892, 
+on September 5, 2024. Upon inspection, we noticed that approximately 48 capsules 
+from the affected lot show visible discoloration. The capsules appear to have 
+a yellowish tint instead of the expected white color.
+
+The affected quantity is 48 capsules from a shipment of 1000 capsules.
+No adverse patient reactions have been reported to date.
+
+Additional Observations:
+- Discoloration is visible on both capsule halves
+- No unusual odor detected
+- Capsules appear to be intact (no cracks or leaks)
+- Storage conditions were maintained as per manufacturer recommendations
+
+================================================================================
+IMPACT ASSESSMENT
+================================================================================
+
+Potential Impact:
+- Product quality concern
+- Possible stability issue
+- Regulatory reporting may be required
+- Customer confidence impact
+
+Affected Population: Retail pharmacy customers
+Distribution Status: Product placed on hold pending investigation
+
+================================================================================
+RECOMMENDED ACTIONS
+================================================================================
+
+1. Quarantine remaining stock from Batch AMX-2024-0892
+2. Notify manufacturer of quality concern
+3. Review batch records and stability data
+4. Assess need for market recall
+5. Document investigation findings
+
+================================================================================
+ADDITIONAL INFORMATION
+================================================================================
+
+Attachments: Photographs of discolored capsules available upon request
+Priority Level: High
+Regulatory Notification: Pending assessment
+
+Report Submitted By: Sarah Johnson
+Date: September 10, 2024
+Signature: ___________________
