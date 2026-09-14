@@ -23,7 +23,7 @@ import {
   ForumOutlined as ForumIcon,
   ArrowBack as ArrowBackIcon,
   Apartment as BuildingIcon,
-  ChatBubbleOutline as ChatBubbleIcon,
+  Chat as ChatBubbleIcon,
 } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { addMessage, setLoading, clearMessages } from '../redux/slices/chatSlice';
