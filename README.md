@@ -28,25 +28,25 @@ Build an intelligent complaint management system that uses AI to automate compla
 
 ## 📋 Features
 
-### Mandatory AI Tools
+### Mandatory AI Tools ✅
 1. **Log Complaint Tool** - Natural language complaint logging with automatic form population
-2. **Edit Complaint Tool** - Natural language editing of existing complaints
+2. **Edit Complaint Tool** - Natural language editing of existing complaints  
 3. **Document Extraction Tool** - PDF/Email parsing and information extraction
 
-### Core Functionality
-- AI-powered risk assessment
-- Automatic severity classification
+### Core Functionality ✅
+- AI-powered risk assessment using LangGraph
+- Automatic severity classification (Critical, Major, Minor)
 - Recommended action generation
 - Chat-based interaction interface
-- Real-time form updates
+- Real-time form updates via Redux
+- PostgreSQL database integration
 
-### Bonus Features (Optional)
-- Complaint completeness checker
-- Root cause recommendation
-- Duplicate complaint detection
-- CAPA recommendation
-- Complaint summary generation
-- Enhanced AI risk classification
+### Bonus Features ✅
+- **Complaint Completeness Checker** - Validates required and recommended fields
+- **CAPA Recommendations** - AI-generated corrective and preventive actions
+- **Root Cause Analysis** - Suggests potential root causes based on complaint details
+- **Duplicate Complaint Detection** - Identifies similar existing complaints
+- **Executive Summary** - Generates concise summaries for management review
 
 ## 🏗️ Architecture
 
@@ -60,7 +60,9 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed system architecture, datab
 - PostgreSQL 14+
 - Groq API Key
 
-### Installation
+### Quick Start
+
+For detailed installation instructions, see [SETUP_GUIDE.md](./SETUP_GUIDE.md).
 
 1. Clone the repository:
 ```bash
@@ -70,38 +72,27 @@ cd AI-Powered-Customer-Complaint-Management-System
 
 2. Set up environment variables:
 ```bash
+cd backend
 cp .env.example .env
-# Edit .env with your configuration
+# Edit .env with your Groq API key and database credentials
 ```
 
-3. Install backend dependencies:
+3. Install and run backend:
 ```bash
 cd backend
 pip install -r requirements.txt
+python init_db.py create
+python main.py
 ```
 
-4. Install frontend dependencies:
+4. Install and run frontend (in another terminal):
 ```bash
 cd frontend
 npm install
-```
-
-5. Initialize database:
-```bash
-cd backend
-python init_db.py
-```
-
-6. Run the application:
-```bash
-# Terminal 1 - Backend
-cd backend
-uvicorn main:app --reload
-
-# Terminal 2 - Frontend
-cd frontend
 npm run dev
 ```
+
+5. Open your browser to `http://localhost:5173`
 
 ## 📁 Project Structure
 
@@ -116,6 +107,7 @@ AI-Powered-Customer-Complaint-Management-System/
 │   │   ├── services/         # Business logic
 │   │   └── graph/            # LangGraph workflows
 │   ├── requirements.txt
+│   ├── init_db.py            # Database initialization
 │   └── main.py
 ├── frontend/
 │   ├── src/
@@ -125,7 +117,10 @@ AI-Powered-Customer-Complaint-Management-System/
 │   │   └── utils/            # Utilities
 │   ├── package.json
 │   └── vite.config.js
-├── ARCHITECTURE.md
+├── sample-documents/         # Sample complaint documents for testing
+├── ARCHITECTURE.md           # Detailed system architecture
+├── SETUP_GUIDE.md            # Comprehensive setup instructions
+├── DEMO_GUIDE.md             # Demo video creation guide
 └── README.md
 ```
 
@@ -155,6 +150,30 @@ Upload a PDF or email, and the AI will:
 - Extract complaint information
 - Populate the form
 - Generate risk assessment
+
+### Use Bonus Features
+Switch to the "Bonus Features" tab to access:
+- Complaint completeness checking
+- CAPA recommendations
+- Root cause analysis
+- Duplicate detection
+- Executive summary generation
+
+## 📚 Documentation
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Detailed system architecture, database schema, and data flow
+- [SETUP_GUIDE.md](./SETUP_GUIDE.md) - Comprehensive installation and configuration guide
+- [DEMO_GUIDE.md](./DEMO_GUIDE.md) - Step-by-step guide for creating your demo video
+
+## 🎥 Demo
+
+For assignment submission, you need to create a 5-10 minute demo video. See [DEMO_GUIDE.md](./DEMO_GUIDE.md) for detailed instructions on:
+
+- Demo structure and timing
+- Code walkthrough highlights
+- Live demonstration scripts
+- Screen recording tips
+- Submission guidelines
 
 ## 🤝 Contributing
 
