@@ -11,7 +11,6 @@ import re
 def _clean_json_str(text: str) -> str:
     """Clean markdown code block wrappers from LLM JSON responses."""
     text = text.strip()
-    # Strip markdown code blocks like ```json ... ```
     if text.startswith("```json"):
         text = text[7:]
     elif text.startswith("```"):
@@ -19,7 +18,6 @@ def _clean_json_str(text: str) -> str:
     if text.endswith("```"):
         text = text[:-3]
     text = text.strip()
-    # Find outer JSON braces
     match = re.search(r'\{.*\}', text, re.DOTALL)
     if match:
         return match.group(0)
@@ -36,11 +34,12 @@ class ComplaintState(TypedDict):
 
 class ComplaintGraph:
     def __init__(self):
-        # Initialize Groq LLM with llama-3.3-70b-versatile or gemma2-9b-it
+        # Initialize Groq LLM with fast & reliable model openai/gpt-oss-20b
         self.llm = ChatGroq(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-20b",
             api_key=settings.GROQ_API_KEY,
-            temperature=0.1
+            temperature=0.1,
+            max_tokens=600
         )
         
         # Build the graph
