@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from typing import Optional
+import traceback
 from app.core.database import get_db
 from app.schemas.complaint import (
     LogComplaintRequest, 
@@ -27,6 +28,7 @@ async def log_complaint(
         result = await complaint_service.log_complaint_from_prompt(request.prompt)
         return result
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -47,6 +49,7 @@ async def edit_complaint(
         )
         return result
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -73,6 +76,7 @@ async def extract_from_document(
         )
         return result
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -93,6 +97,7 @@ async def get_complaint(
     except HTTPException:
         raise
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -110,4 +115,5 @@ async def list_complaints(
         complaints = complaint_service.list_complaints(skip=skip, limit=limit)
         return complaints
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
