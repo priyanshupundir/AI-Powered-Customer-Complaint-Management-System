@@ -79,7 +79,18 @@ const ComplaintForm = () => {
             onChange={handleChange('manufacturingDate')}
             variant="outlined"
             size="small"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ 
+              shrink: true,
+              sx: { 
+                backgroundColor: 'white',
+                padding: '0 4px'
+              }
+            }}
+            sx={{
+              '& .MuiInputBase-root': {
+                height: '40px'
+              }
+            }}
           />
         </Grid>
 
@@ -92,7 +103,18 @@ const ComplaintForm = () => {
             onChange={handleChange('expiryDate')}
             variant="outlined"
             size="small"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ 
+              shrink: true,
+              sx: { 
+                backgroundColor: 'white',
+                padding: '0 4px'
+              }
+            }}
+            sx={{
+              '& .MuiInputBase-root': {
+                height: '40px'
+              }
+            }}
           />
         </Grid>
 

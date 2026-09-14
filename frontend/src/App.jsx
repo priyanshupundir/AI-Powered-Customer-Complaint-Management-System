@@ -5,7 +5,7 @@ import { CssBaseline, Container, Grid, Box, Typography, Tabs } from '@mui/materi
 import Tab from '@mui/material/Tab';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ComplaintForm from './components/ComplaintForm';
-import AICopilot from './components/AICopilot';
+import FloatingChatbot from './components/FloatingChatbot';
 import RiskAssessment from './components/RiskAssessment';
 import BonusFeatures from './components/BonusFeatures';
 
@@ -61,18 +61,17 @@ function AppContent() {
 
         <TabPanel value={tabValue} index={0}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={5}>
+            <Grid item xs={12} md={7} lg={8}>
               <ComplaintForm />
             </Grid>
             
-            <Grid item xs={12} md={6} lg={4}>
-              <AICopilot />
-            </Grid>
-            
-            <Grid item xs={12} md={12} lg={3}>
+            <Grid item xs={12} md={5} lg={4}>
               <RiskAssessment />
             </Grid>
           </Grid>
+          
+          {/* Floating Chatbot */}
+          <FloatingChatbot />
         </TabPanel>
 
         <TabPanel value={tabValue} index={1}>
@@ -85,6 +84,9 @@ function AppContent() {
               <BonusFeatures />
             </Grid>
           </Grid>
+          
+          {/* Floating Chatbot */}
+          <FloatingChatbot />
         </TabPanel>
       </Container>
     </Box>
