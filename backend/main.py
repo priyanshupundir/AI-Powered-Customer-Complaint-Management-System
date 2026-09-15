@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
 from app.core.config import settings
 from app.core.database import engine, Base
 from app.api import complaints, chat, bonus_features
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables (only if not in production with managed database)
+if os.getenv("ENVIRONMENT") != "production":
+    Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -14,10 +16,18 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configure CORS (allow all origins in dev for smooth frontend-backend connection)
+# Configure CORS - allow all origins in development, specific ones in production
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+if os.getenv("ENVIRONMENT") == "production":
+    # In production, allow specific domains
+    allow_origins = [frontend_url]
+else:
+    # In development, allow all for testing
+    allow_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
