@@ -12,6 +12,7 @@ import {
   Fade,
   Divider,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import {
   Send as SendIcon,
   AttachFile as AttachFileIcon,
@@ -80,18 +81,22 @@ const FloatingChatbot = () => {
       }
       
       if (response && response.complaint) {
+        // Get current form data to preserve existing values
+        const currentFormData = useSelector((state) => state.complaint.formData);
+        
+        // Only update fields that are present in the response, preserve existing values
         const complaintData = {
-          productName: response.complaint.product_name || '',
-          productStrength: response.complaint.product_strength || '',
-          batchNumber: response.complaint.batch_number || '',
-          manufacturingDate: response.complaint.manufacturing_date || '',
-          expiryDate: response.complaint.expiry_date || '',
-          affectedQuantity: response.complaint.affected_quantity || '',
-          complaintDescription: response.complaint.complaint_description || '',
-          customerName: response.complaint.customer_name || '',
-          customerEmail: response.complaint.customer_email || '',
-          reporterName: response.complaint.reporter_name || '',
-          reporterEmail: response.complaint.reporter_email || '',
+          productName: response.complaint.product_name || currentFormData.productName,
+          productStrength: response.complaint.product_strength || currentFormData.productStrength,
+          batchNumber: response.complaint.batch_number || currentFormData.batchNumber,
+          manufacturingDate: response.complaint.manufacturing_date || currentFormData.manufacturingDate,
+          expiryDate: response.complaint.expiry_date || currentFormData.expiryDate,
+          affectedQuantity: response.complaint.affected_quantity || currentFormData.affectedQuantity,
+          complaintDescription: response.complaint.complaint_description || currentFormData.complaintDescription,
+          customerName: response.complaint.customer_name || currentFormData.customerName,
+          customerEmail: response.complaint.customer_email || currentFormData.customerEmail,
+          reporterName: response.complaint.reporter_name || currentFormData.reporterName,
+          reporterEmail: response.complaint.reporter_email || currentFormData.reporterEmail,
         };
         dispatch(updateFormData(complaintData));
         dispatch(setComplaintId(response.complaint.id));
