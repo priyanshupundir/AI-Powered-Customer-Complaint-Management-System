@@ -36,6 +36,7 @@ const FloatingChatbot = () => {
   const messages = useSelector((state) => state.chat.messages);
   const isLoading = useSelector((state) => state.chat.isLoading);
   const currentFormData = useSelector((state) => state.complaint.formData);
+  const currentComplaintId = useSelector((state) => state.complaint.currentComplaintId);
   const [inputMessage, setInputMessage] = useState('');
   const [file, setFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -73,27 +74,44 @@ const FloatingChatbot = () => {
           content: "I've extracted the complaint information from your document and populated the form." 
         }));
       } else {
-        response = await complaintAPI.logComplaint(userMessage);
-        dispatch(addMessage({ 
-          role: 'assistant', 
-          content: "I've logged the complaint and populated the form with the extracted information." 
-        }));
+        // Check if this is an edit request or a new complaint
+        const editKeywords = ['change', 'update', 'modify', 'replace', 'edit', 'correct', 'fix'];
+        const isEditRequest = editKeywords.some(keyword => 
+          userMessage.toLowerCase().includes(keyword)
+        ) && (currentFormData.productName || currentFormData.batchNumber);
+        
+        if (isEditRequest && currentComplaintId) {
+          // Use edit endpoint for existing complaints
+          response = await complaintAPI.editComplaint(currentComplaintId, userMessage);
+          dispatch(addMessage({ 
+            role: 'assistant', 
+            content: "I've updated the complaint based on your instructions." 
+          }));
+        } else {
+          // Use log endpoint for new complaints
+          response = await complaintAPI.logComplaint(userMessage);
+          dispatch(addMessage({ 
+            role: 'assistant', 
+            content: "I've logged the complaint and populated the form with the extracted information." 
+          }));
+        }
       }
       
       if (response && response.complaint) {
-        // Only update fields that are present in the response, preserve existing values
+        // For edits, completely replace with new data from backend
+        // For new complaints, use the response data
         const complaintData = {
-          productName: response.complaint.product_name || currentFormData.productName,
-          productStrength: response.complaint.product_strength || currentFormData.productStrength,
-          batchNumber: response.complaint.batch_number || currentFormData.batchNumber,
-          manufacturingDate: response.complaint.manufacturing_date || currentFormData.manufacturingDate,
-          expiryDate: response.complaint.expiry_date || currentFormData.expiryDate,
-          affectedQuantity: response.complaint.affected_quantity || currentFormData.affectedQuantity,
-          complaintDescription: response.complaint.complaint_description || currentFormData.complaintDescription,
-          customerName: response.complaint.customer_name || currentFormData.customerName,
-          customerEmail: response.complaint.customer_email || currentFormData.customerEmail,
-          reporterName: response.complaint.reporter_name || currentFormData.reporterName,
-          reporterEmail: response.complaint.reporter_email || currentFormData.reporterEmail,
+          productName: response.complaint.product_name || '',
+          productStrength: response.complaint.product_strength || '',
+          batchNumber: response.complaint.batch_number || '',
+          manufacturingDate: response.complaint.manufacturing_date || '',
+          expiryDate: response.complaint.expiry_date || '',
+          affectedQuantity: response.complaint.affected_quantity || '',
+          complaintDescription: response.complaint.complaint_description || '',
+          customerName: response.complaint.customer_name || '',
+          customerEmail: response.complaint.customer_email || '',
+          reporterName: response.complaint.reporter_name || '',
+          reporterEmail: response.complaint.reporter_email || '',
         };
         dispatch(updateFormData(complaintData));
         dispatch(setComplaintId(response.complaint.id));
