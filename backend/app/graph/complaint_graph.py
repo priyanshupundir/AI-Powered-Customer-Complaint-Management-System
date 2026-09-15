@@ -98,40 +98,60 @@ class ComplaintGraph:
             "risk_assessment": final_state["risk_assessment"]
         }
     
-    async def process_edit_complaint(self, prompt: str, current_complaint) -> dict:
+    async def process_edit_complaint(self, prompt: str, current_data: dict) -> dict:
         """
-        Process an edit complaint request.
+        Process an edit complaint request cleanly.
         """
-        edit_prompt = f"""
-        Current complaint data:
-        {json.dumps(current_complaint.__dict__, default=str, indent=2)}
+        # Ensure current_data is clean without ORM metadata
+        clean_current = {k: v for k, v in current_data.items() if not k.startswith('_')}
         
-        Edit request: {prompt}
+        edit_prompt = f"""You are a pharmaceutical complaint editor assistant.
+CURRENT COMPLAINT DATA:
+{json.dumps(clean_current, indent=2)}
+
+USER EDIT INSTRUCTION:
+"{prompt}"
+
+Update the fields requested by the user. Keep all unchanged fields intact from the CURRENT COMPLAINT DATA.
+Return ONLY a valid JSON object with these exact keys:
+- product_name (string)
+- product_strength (string or null)
+- batch_number (string or null)
+- manufacturing_date (YYYY-MM-DD string or null)
+- expiry_date (YYYY-MM-DD string or null)
+- affected_quantity (string or null)
+- complaint_description (string or null)
+- customer_name (string or null)
+- customer_email (string or null)
+- reporter_name (string or null)
+- reporter_email (string or null)
+"""
+
+        response = await self.llm.ainvoke([
+            SystemMessage(content="You are an expert AI data editor for pharmaceutical complaints. Return ONLY valid JSON."),
+            HumanMessage(content=edit_prompt)
+        ])
         
-        Identify which fields need to be updated and their new values. Return a JSON object with all complaint fields. Preserving unchanged existing values when not specified in the edit request.
-        """
+        try:
+            cleaned_json = _clean_json_str(response.content)
+            extracted_updates = json.loads(cleaned_json)
+        except Exception:
+            extracted_updates = {}
         
-        initial_state = {
-            "prompt": edit_prompt,
-            "extracted_data": {},
-            "risk_assessment": {},
-            "response": "",
-            "current_complaint": current_complaint.__dict__
-        }
-        
-        final_state = await self.graph.ainvoke(initial_state)
-        
-        # Merge edit updates over current_complaint dict to guarantee full complaint data return
-        merged_data = dict(current_complaint.__dict__)
-        updates = final_state["extracted_data"]
-        for k, v in updates.items():
-            if v is not None and v != "":
+        # Merge updates over existing data
+        merged_data = dict(clean_current)
+        for k, v in extracted_updates.items():
+            if v is not None and v != "" and k in merged_data:
                 merged_data[k] = v
+        
+        # Perform risk assessment on updated complaint data
+        dummy_state = {"extracted_data": merged_data, "risk_assessment": {}}
+        assessed_state = self._assess_risk(dummy_state)
         
         return {
             "complaint_updates": merged_data,
             "extracted_data": merged_data,
-            "risk_assessment": final_state["risk_assessment"]
+            "risk_assessment": assessed_state["risk_assessment"]
         }
     
     async def process_document_extraction(self, file_content: bytes, file_type: str) -> dict:
@@ -208,17 +228,17 @@ class ComplaintGraph:
         extraction_prompt = f"""
         Extract structured complaint data from the text.
         Return a JSON object with these fields:
-        - product_name (required string)
-        - product_strength (optional string)
-        - batch_number (optional string)
+        - product_name (required string: name of medicine or product)
+        - product_strength (optional string: e.g. 500mg)
+        - batch_number (optional string: e.g. BATCH-1234)
         - manufacturing_date (optional YYYY-MM-DD string)
         - expiry_date (optional YYYY-MM-DD string)
-        - affected_quantity (optional string)
-        - complaint_description (optional string)
+        - affected_quantity (optional string: e.g. 150 bottles)
+        - complaint_description (optional string: description of physical defect, color, odor, issue)
         - customer_name (optional string: entity, pharmacy, hospital, client, or company reporting or experiencing the issue)
-        - customer_email (optional string: email address of the customer/pharmacy/company)
+        - customer_email (optional string: email address of customer/pharmacy/company)
         - reporter_name (optional string: person, doctor, manager, or individual filing the report)
-        - reporter_email (optional string: email address of the reporter)
+        - reporter_email (optional string: email address of reporter)
         
         Text to process: {state['prompt']}
         

@@ -77,15 +77,13 @@ const FloatingChatbot = () => {
         }));
       } else {
         const hasExistingData = Boolean(currentFormData.productName || currentFormData.batchNumber || currentFormData.customerName);
-        const isEditRequest = (currentComplaintId || hasExistingData) && (
-          editKeywords.some(keyword => userMessage.toLowerCase().includes(keyword)) || hasExistingData
-        );
+        const isEditRequest = Boolean(currentComplaintId || hasExistingData);
         
         if (isEditRequest && currentComplaintId) {
           response = await complaintAPI.editComplaint(currentComplaintId, userMessage);
           dispatch(addMessage({ 
             role: 'assistant', 
-            content: "I've updated the complaint while preserving your existing information." 
+            content: "I've updated the complaint form according to your instructions." 
           }));
         } else {
           response = await complaintAPI.logComplaint(userMessage);
@@ -98,23 +96,21 @@ const FloatingChatbot = () => {
       
       if (response && response.complaint) {
         const c = response.complaint;
-        
-        // Merge strategy: New non-empty field > Existing field > empty string
-        const mergedFormData = {
-          productName: c.product_name || currentFormData.productName || '',
-          productStrength: c.product_strength || currentFormData.productStrength || '',
-          batchNumber: c.batch_number || currentFormData.batchNumber || '',
-          manufacturingDate: c.manufacturing_date || currentFormData.manufacturingDate || '',
-          expiryDate: c.expiry_date || currentFormData.expiryDate || '',
-          affectedQuantity: c.affected_quantity || currentFormData.affectedQuantity || '',
-          complaintDescription: c.complaint_description || currentFormData.complaintDescription || '',
-          customerName: c.customer_name || currentFormData.customerName || '',
-          customerEmail: c.customer_email || currentFormData.customerEmail || '',
-          reporterName: c.reporter_name || currentFormData.reporterName || '',
-          reporterEmail: c.reporter_email || currentFormData.reporterEmail || '',
-        };
-        
-        dispatch(updateFormData(mergedFormData));
+        const updatedFields = {};
+
+        if (c.product_name) updatedFields.productName = c.product_name;
+        if (c.product_strength) updatedFields.productStrength = c.product_strength;
+        if (c.batch_number) updatedFields.batchNumber = c.batch_number;
+        if (c.manufacturing_date) updatedFields.manufacturingDate = c.manufacturing_date;
+        if (c.expiry_date) updatedFields.expiryDate = c.expiry_date;
+        if (c.affected_quantity) updatedFields.affectedQuantity = c.affected_quantity;
+        if (c.complaint_description) updatedFields.complaintDescription = c.complaint_description;
+        if (c.customer_name) updatedFields.customerName = c.customer_name;
+        if (c.customer_email) updatedFields.customerEmail = c.customer_email;
+        if (c.reporter_name) updatedFields.reporterName = c.reporter_name;
+        if (c.reporter_email) updatedFields.reporterEmail = c.reporter_email;
+
+        dispatch(updateFormData(updatedFields));
         if (c.id) {
           dispatch(setComplaintId(c.id));
         }

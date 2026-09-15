@@ -68,8 +68,22 @@ class ComplaintService:
         if not complaint:
             raise ValueError("Complaint not found")
         
+        current_data = {
+            "product_name": complaint.product_name,
+            "product_strength": complaint.product_strength,
+            "batch_number": complaint.batch_number,
+            "manufacturing_date": str(complaint.manufacturing_date) if complaint.manufacturing_date else None,
+            "expiry_date": str(complaint.expiry_date) if complaint.expiry_date else None,
+            "affected_quantity": complaint.affected_quantity,
+            "complaint_description": complaint.complaint_description,
+            "customer_name": complaint.customer_name,
+            "customer_email": complaint.customer_email,
+            "reporter_name": complaint.reporter_name,
+            "reporter_email": complaint.reporter_email,
+        }
+        
         # Use LangGraph to parse edit instructions
-        edit_data = await self.complaint_graph.process_edit_complaint(prompt, complaint)
+        edit_data = await self.complaint_graph.process_edit_complaint(prompt, current_data)
         
         # Update complaint fields
         for field, value in edit_data.get("complaint_updates", {}).items():
@@ -110,7 +124,6 @@ class ComplaintService:
             self.db.commit()
             self.db.refresh(risk_assessment)
         
-        # Return complete complaint object (not just updated fields)
         return ComplaintWithRiskResponse(
             complaint=ComplaintResponse.from_orm(complaint),
             risk_assessment=RiskAssessmentResponse.from_orm(risk_assessment)
@@ -217,7 +230,7 @@ class ComplaintService:
             # Try common date formats
             for fmt in ["%Y-%m-%d", "%d/%m/%Y", "%m/%d/%Y", "%Y%m%d"]:
                 try:
-                    return datetime.datetime.strptime(date_str, fmt).date()
+                    return datetime.datetime.strptime(str(date_str).strip(), fmt).date()
                 except ValueError:
                     continue
             return None
