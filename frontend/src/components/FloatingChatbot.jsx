@@ -12,7 +12,6 @@ import {
   Fade,
   Divider,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
 import {
   Send as SendIcon,
   AttachFile as AttachFileIcon,
