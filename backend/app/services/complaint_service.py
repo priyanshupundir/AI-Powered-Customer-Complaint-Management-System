@@ -110,6 +110,7 @@ class ComplaintService:
             self.db.commit()
             self.db.refresh(risk_assessment)
         
+        # Return complete complaint object (not just updated fields)
         return ComplaintWithRiskResponse(
             complaint=ComplaintResponse.from_orm(complaint),
             risk_assessment=RiskAssessmentResponse.from_orm(risk_assessment)

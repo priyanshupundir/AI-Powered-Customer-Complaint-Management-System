@@ -43,6 +43,9 @@ const FloatingChatbot = () => {
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'chat'
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
+  
+  // Define edit keywords at component level
+  const editKeywords = ['change', 'update', 'modify', 'replace', 'edit', 'correct', 'fix'];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -75,7 +78,6 @@ const FloatingChatbot = () => {
         }));
       } else {
         // Check if this is an edit request or a new complaint
-        const editKeywords = ['change', 'update', 'modify', 'replace', 'edit', 'correct', 'fix'];
         const isEditRequest = editKeywords.some(keyword => 
           userMessage.toLowerCase().includes(keyword)
         ) && (currentFormData.productName || currentFormData.batchNumber);
@@ -98,20 +100,24 @@ const FloatingChatbot = () => {
       }
       
       if (response && response.complaint) {
-        // For edits, completely replace with new data from backend
-        // For new complaints, use the response data
+        // For edits, merge backend response with existing form data to preserve unchanged fields
+        // For new complaints, use the response data completely
+        const isEdit = editKeywords.some(keyword => 
+          userMessage.toLowerCase().includes(keyword)
+        ) && (currentFormData.productName || currentFormData.batchNumber);
+        
         const complaintData = {
-          productName: response.complaint.product_name || '',
-          productStrength: response.complaint.product_strength || '',
-          batchNumber: response.complaint.batch_number || '',
-          manufacturingDate: response.complaint.manufacturing_date || '',
-          expiryDate: response.complaint.expiry_date || '',
-          affectedQuantity: response.complaint.affected_quantity || '',
-          complaintDescription: response.complaint.complaint_description || '',
-          customerName: response.complaint.customer_name || '',
-          customerEmail: response.complaint.customer_email || '',
-          reporterName: response.complaint.reporter_name || '',
-          reporterEmail: response.complaint.reporter_email || '',
+          productName: response.complaint.product_name || (isEdit ? currentFormData.productName : ''),
+          productStrength: response.complaint.product_strength || (isEdit ? currentFormData.productStrength : ''),
+          batchNumber: response.complaint.batch_number || (isEdit ? currentFormData.batchNumber : ''),
+          manufacturingDate: response.complaint.manufacturing_date || (isEdit ? currentFormData.manufacturingDate : ''),
+          expiryDate: response.complaint.expiry_date || (isEdit ? currentFormData.expiryDate : ''),
+          affectedQuantity: response.complaint.affected_quantity || (isEdit ? currentFormData.affectedQuantity : ''),
+          complaintDescription: response.complaint.complaint_description || (isEdit ? currentFormData.complaintDescription : ''),
+          customerName: response.complaint.customer_name || (isEdit ? currentFormData.customerName : ''),
+          customerEmail: response.complaint.customer_email || (isEdit ? currentFormData.customerEmail : ''),
+          reporterName: response.complaint.reporter_name || (isEdit ? currentFormData.reporterName : ''),
+          reporterEmail: response.complaint.reporter_email || (isEdit ? currentFormData.reporterEmail : ''),
         };
         dispatch(updateFormData(complaintData));
         dispatch(setComplaintId(response.complaint.id));
