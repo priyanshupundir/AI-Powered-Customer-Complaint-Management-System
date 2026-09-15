@@ -35,6 +35,7 @@ const FloatingChatbot = () => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.chat.messages);
   const isLoading = useSelector((state) => state.chat.isLoading);
+  const currentFormData = useSelector((state) => state.complaint.formData);
   const [inputMessage, setInputMessage] = useState('');
   const [file, setFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -80,9 +81,6 @@ const FloatingChatbot = () => {
       }
       
       if (response && response.complaint) {
-        // Get current form data to preserve existing values
-        const currentFormData = useSelector((state) => state.complaint.formData);
-        
         // Only update fields that are present in the response, preserve existing values
         const complaintData = {
           productName: response.complaint.product_name || currentFormData.productName,
