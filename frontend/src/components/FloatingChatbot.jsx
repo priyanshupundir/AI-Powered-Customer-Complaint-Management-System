@@ -44,8 +44,7 @@ const FloatingChatbot = () => {
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
   
-  // Define edit keywords at component level
-  const editKeywords = ['change', 'update', 'modify', 'replace', 'edit', 'correct', 'fix'];
+  const editKeywords = ['change', 'update', 'modify', 'replace', 'edit', 'correct', 'fix', 'also', 'set', 'make'];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -77,50 +76,48 @@ const FloatingChatbot = () => {
           content: "I've extracted the complaint information from your document and populated the form." 
         }));
       } else {
-        // Check if this is an edit request or a new complaint
-        const isEditRequest = editKeywords.some(keyword => 
-          userMessage.toLowerCase().includes(keyword)
-        ) && (currentFormData.productName || currentFormData.batchNumber);
+        const hasExistingData = Boolean(currentFormData.productName || currentFormData.batchNumber || currentFormData.customerName);
+        const isEditRequest = (currentComplaintId || hasExistingData) && (
+          editKeywords.some(keyword => userMessage.toLowerCase().includes(keyword)) || hasExistingData
+        );
         
         if (isEditRequest && currentComplaintId) {
-          // Use edit endpoint for existing complaints
           response = await complaintAPI.editComplaint(currentComplaintId, userMessage);
           dispatch(addMessage({ 
             role: 'assistant', 
-            content: "I've updated the complaint based on your instructions." 
+            content: "I've updated the complaint while preserving your existing information." 
           }));
         } else {
-          // Use log endpoint for new complaints
           response = await complaintAPI.logComplaint(userMessage);
           dispatch(addMessage({ 
             role: 'assistant', 
-            content: "I've logged the complaint and populated the form with the extracted information." 
+            content: "I've logged the complaint and populated the form with the extracted details." 
           }));
         }
       }
       
       if (response && response.complaint) {
-        // For edits, merge backend response with existing form data to preserve unchanged fields
-        // For new complaints, use the response data completely
-        const isEdit = editKeywords.some(keyword => 
-          userMessage.toLowerCase().includes(keyword)
-        ) && (currentFormData.productName || currentFormData.batchNumber);
+        const c = response.complaint;
         
-        const complaintData = {
-          productName: response.complaint.product_name || (isEdit ? currentFormData.productName : ''),
-          productStrength: response.complaint.product_strength || (isEdit ? currentFormData.productStrength : ''),
-          batchNumber: response.complaint.batch_number || (isEdit ? currentFormData.batchNumber : ''),
-          manufacturingDate: response.complaint.manufacturing_date || (isEdit ? currentFormData.manufacturingDate : ''),
-          expiryDate: response.complaint.expiry_date || (isEdit ? currentFormData.expiryDate : ''),
-          affectedQuantity: response.complaint.affected_quantity || (isEdit ? currentFormData.affectedQuantity : ''),
-          complaintDescription: response.complaint.complaint_description || (isEdit ? currentFormData.complaintDescription : ''),
-          customerName: response.complaint.customer_name || (isEdit ? currentFormData.customerName : ''),
-          customerEmail: response.complaint.customer_email || (isEdit ? currentFormData.customerEmail : ''),
-          reporterName: response.complaint.reporter_name || (isEdit ? currentFormData.reporterName : ''),
-          reporterEmail: response.complaint.reporter_email || (isEdit ? currentFormData.reporterEmail : ''),
+        // Merge strategy: New non-empty field > Existing field > empty string
+        const mergedFormData = {
+          productName: c.product_name || currentFormData.productName || '',
+          productStrength: c.product_strength || currentFormData.productStrength || '',
+          batchNumber: c.batch_number || currentFormData.batchNumber || '',
+          manufacturingDate: c.manufacturing_date || currentFormData.manufacturingDate || '',
+          expiryDate: c.expiry_date || currentFormData.expiryDate || '',
+          affectedQuantity: c.affected_quantity || currentFormData.affectedQuantity || '',
+          complaintDescription: c.complaint_description || currentFormData.complaintDescription || '',
+          customerName: c.customer_name || currentFormData.customerName || '',
+          customerEmail: c.customer_email || currentFormData.customerEmail || '',
+          reporterName: c.reporter_name || currentFormData.reporterName || '',
+          reporterEmail: c.reporter_email || currentFormData.reporterEmail || '',
         };
-        dispatch(updateFormData(complaintData));
-        dispatch(setComplaintId(response.complaint.id));
+        
+        dispatch(updateFormData(mergedFormData));
+        if (c.id) {
+          dispatch(setComplaintId(c.id));
+        }
       }
       
       if (response && response.risk_assessment) {

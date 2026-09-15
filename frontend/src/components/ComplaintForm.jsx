@@ -165,22 +165,12 @@ const ComplaintForm = () => {
                 size="small"
                 InputLabelProps={{ 
                   shrink: true,
-                  sx: {
-                    backgroundColor: '#ffffff',
-                    padding: '0 4px',
-                    fontSize: '0.85rem',
-                    fontWeight: 500
-                  }
                 }}
                 sx={{ 
                   bgcolor: '#ffffff',
-                  '& .MuiInputBase-root': {
-                    height: '40px'
-                  },
                   '& .MuiInputLabel-root': {
-                    transform: 'translate(14px, -10px) scale(0.75)',
                     backgroundColor: '#ffffff',
-                    padding: '0 4px'
+                    px: 0.5,
                   }
                 }}
               />
@@ -196,22 +186,12 @@ const ComplaintForm = () => {
                 size="small"
                 InputLabelProps={{ 
                   shrink: true,
-                  sx: {
-                    backgroundColor: '#ffffff',
-                    padding: '0 4px',
-                    fontSize: '0.85rem',
-                    fontWeight: 500
-                  }
                 }}
                 sx={{ 
                   bgcolor: '#ffffff',
-                  '& .MuiInputBase-root': {
-                    height: '40px'
-                  },
                   '& .MuiInputLabel-root': {
-                    transform: 'translate(14px, -10px) scale(0.75)',
                     backgroundColor: '#ffffff',
-                    padding: '0 4px'
+                    px: 0.5,
                   }
                 }}
               />

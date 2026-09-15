@@ -108,7 +108,7 @@ class ComplaintGraph:
         
         Edit request: {prompt}
         
-        Identify which fields need to be updated and their new values.
+        Identify which fields need to be updated and their new values. Return a JSON object with all complaint fields. Preserving unchanged existing values when not specified in the edit request.
         """
         
         initial_state = {
@@ -121,8 +121,16 @@ class ComplaintGraph:
         
         final_state = await self.graph.ainvoke(initial_state)
         
+        # Merge edit updates over current_complaint dict to guarantee full complaint data return
+        merged_data = dict(current_complaint.__dict__)
+        updates = final_state["extracted_data"]
+        for k, v in updates.items():
+            if v is not None and v != "":
+                merged_data[k] = v
+        
         return {
-            "complaint_updates": final_state["extracted_data"],
+            "complaint_updates": merged_data,
+            "extracted_data": merged_data,
             "risk_assessment": final_state["risk_assessment"]
         }
     
@@ -142,7 +150,7 @@ class ComplaintGraph:
         Content: {text_content[:10000]}
         
         Extract all relevant complaint details including product information, 
-        batch numbers, dates, quantities, and any other relevant information.
+        batch numbers, dates, quantities, customer name/email, and reporter name/email.
         """
         
         initial_state = {
@@ -198,8 +206,8 @@ class ComplaintGraph:
     
     def _extract_complaint_data(self, state: ComplaintState) -> ComplaintState:
         extraction_prompt = f"""
-        Extract structured complaint data from the following text.
-        Return the result as a JSON object with these fields:
+        Extract structured complaint data from the text.
+        Return a JSON object with these fields:
         - product_name (required string)
         - product_strength (optional string)
         - batch_number (optional string)
@@ -207,18 +215,18 @@ class ComplaintGraph:
         - expiry_date (optional YYYY-MM-DD string)
         - affected_quantity (optional string)
         - complaint_description (optional string)
-        - customer_name (optional string)
-        - customer_email (optional string)
-        - reporter_name (optional string)
-        - reporter_email (optional string)
+        - customer_name (optional string: entity, pharmacy, hospital, client, or company reporting or experiencing the issue)
+        - customer_email (optional string: email address of the customer/pharmacy/company)
+        - reporter_name (optional string: person, doctor, manager, or individual filing the report)
+        - reporter_email (optional string: email address of the reporter)
         
         Text to process: {state['prompt']}
         
-        Return ONLY valid JSON. Do not include extra text.
+        Return ONLY valid JSON.
         """
         
         response = self.llm.invoke([
-            SystemMessage(content="You are a data extraction specialist for pharmaceutical complaints. Return only JSON."),
+            SystemMessage(content="You are an expert AI data extraction specialist for pharmaceutical complaints. Carefully extract customer_name, customer_email, reporter_name, and reporter_email whenever mentioned. Return ONLY JSON."),
             HumanMessage(content=extraction_prompt)
         ])
         
