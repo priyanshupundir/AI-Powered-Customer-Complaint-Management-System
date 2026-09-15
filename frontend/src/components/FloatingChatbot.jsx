@@ -59,7 +59,8 @@ const FloatingChatbot = () => {
   const handleSendMessage = async () => {
     if (!inputMessage.trim() && !file) return;
 
-    const userMessage = inputMessage || (file ? `Uploaded file: ${file.name}` : '');
+    const fileToUpload = file;
+    const userMessage = inputMessage || (fileToUpload ? `Uploaded file: ${fileToUpload.name}` : '');
     
     dispatch(addMessage({ role: 'user', content: userMessage }));
     dispatch(setLoading(true));
@@ -69,8 +70,8 @@ const FloatingChatbot = () => {
     try {
       let response;
       
-      if (file) {
-        response = await complaintAPI.extractFromDocument(file);
+      if (fileToUpload) {
+        response = await complaintAPI.extractFromDocument(fileToUpload);
         dispatch(addMessage({ 
           role: 'assistant', 
           content: "I've extracted the complaint information from your document and populated the form." 

@@ -154,18 +154,33 @@ Return ONLY a valid JSON object with these exact keys:
             "risk_assessment": assessed_state["risk_assessment"]
         }
     
-    async def process_document_extraction(self, file_content: bytes, file_type: str) -> dict:
+    async def process_document_extraction(self, file_content: bytes, file_type: str, filename: str = "") -> dict:
         """
-        Process document extraction.
+        Process document extraction from PDF, text, or file bytes.
         """
-        try:
-            text_content = file_content.decode('utf-8', errors='ignore')
-        except:
-            text_content = str(file_content)
+        text_content = ""
+        is_pdf = (file_type and "pdf" in file_type.lower()) or (filename and filename.lower().endswith(".pdf"))
+        
+        if is_pdf:
+            try:
+                import io
+                import PyPDF2
+                reader = PyPDF2.PdfReader(io.BytesIO(file_content))
+                extracted = [p.extract_text() or "" for p in reader.pages]
+                text_content = "\n".join(extracted)
+            except Exception as e:
+                print(f"PDF parsing error: {e}")
+        
+        if not text_content or not text_content.strip():
+            try:
+                text_content = file_content.decode('utf-8', errors='ignore')
+            except Exception:
+                text_content = str(file_content)
         
         extraction_prompt = f"""
         Extract complaint information from the following document content:
         
+        Filename: {filename}
         File type: {file_type}
         Content: {text_content[:10000]}
         
@@ -184,7 +199,7 @@ Return ONLY a valid JSON object with these exact keys:
         final_state = await self.graph.ainvoke(initial_state)
         
         return {
-            "product_name": final_state["extracted_data"].get("product_name", ""),
+            "product_name": final_state["extracted_data"].get("product_name") or "Extracted Complaint Product",
             "product_strength": final_state["extracted_data"].get("product_strength"),
             "batch_number": final_state["extracted_data"].get("batch_number"),
             "manufacturing_date": final_state["extracted_data"].get("manufacturing_date"),

@@ -141,12 +141,13 @@ class ComplaintService:
         # Use LangGraph to process document
         extracted_data = await self.complaint_graph.process_document_extraction(
             file_content, 
-            file_type
+            file_type,
+            filename
         )
         
         # Create complaint record
         complaint = Complaint(
-            product_name=extracted_data.get("product_name", ""),
+            product_name=extracted_data.get("product_name") or "Extracted Complaint Product",
             product_strength=extracted_data.get("product_strength"),
             batch_number=extracted_data.get("batch_number"),
             manufacturing_date=self._parse_date(extracted_data.get("manufacturing_date")),
